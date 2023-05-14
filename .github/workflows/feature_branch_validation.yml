@@ -14,7 +14,7 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v2
         with:
-          path: Bedrock
+          path: force-app/**
 
       # Dynamically select token
       - name: Set Secret Credentials
@@ -63,13 +63,7 @@ jobs:
             echo y | sfdx plugins:install sfdx-git-delta
             sfdx plugins 
 
-      # Install java
-      - name: 'Installing java'
-        run: sudo apt-get install openjdk-8-jdk
-
-      # Install SFDX scanner
-      - name: 'Installing SFDX scanner'
-        run: sfdx plugins:install @salesforce/sfdx-scanner
+  
 
 
       # We use SFDX Git Delta to create a directory with only the metadata that has changed, this allows us
