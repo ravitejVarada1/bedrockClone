@@ -53,23 +53,13 @@ jobs:
             - name: 'Installing SFDX scanner'
               run: sfdx plugins:install @salesforce/sfdx-scanner
 
-
-            # We use SFDX Git Delta to create a directory with only the metadata that has changed, this allows us
-            # to deploy only those changes, as opposed to deploying the entire branch. This helps reducing deployment times
-            - name: 'Create delta packages for new, modified or deleted metadata'
-              run: | 
-                  mkdir changed-sources
-                  sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/ 
-
             # Scan the code in the delta directory by using sfdx scanner. Output the results of the scan in a new file
             # called apexScanResults.sarif
             - name: 'Scan code'
               run: |
-                  cd changed-sources
                   sfdx scanner:run --format sarif --target './**/' --outfile 'results.html'  
-                  cd ..
  
             - name: Upload SARIF file
               uses: github/codeql-action/upload-sarif@v2
               with:
-                sarif_file: changed-sources/results.html
+                sarif_file:  results.html
